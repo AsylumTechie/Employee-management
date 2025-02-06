@@ -1,0 +1,280 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* Global Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to right, #333248, #05e79f); ; 
+    color: #333;
+    margin: 0;
+    padding: 0;
+  }
+  
+ 
+  .container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    max-width: 1200px;
+  }
+  
+  /* Heading Styles */
+  h2, h3 {
+    color: #333;
+  }
+  
+  /* Form Styles */
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  input,
+  textarea,
+  button {
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="date"],
+  input[type="time"],
+  textarea {
+    width: 100%;
+  }
+  
+  button {
+    background-color: #3406ee;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Error Message */
+  p {
+    color: red;
+    font-size: 14px;
+  }
+  
+  /* Link Styles */
+  a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Card Styles for Event Listing */
+  .event-card {
+    background-color: #4905e7;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  
+  .event-card h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .event-card p {
+    font-size: 14px;
+    color: #777;
+  }
+  
+  /* src/components/EventDashboard.css */
+
+.dashboard-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.dashboard-title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.create-event {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.create-btn {
+  background-color: #2ff807;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.create-btn:hover {
+  background-color: #0056b3;
+}
+
+.loading-text,
+.error-text {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #d9534f;
+}
+
+.event-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.event-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.event-card {
+  width: 250px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  text-align: center;
+}
+
+.event-name {
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.event-description {
+  font-size: 1rem;
+  color: #777;
+  margin: 10px 0;
+}
+
+.event-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.event-date {
+  font-size: 0.9rem;
+  color: #999;
+}
+
+.view-btn {
+  background-color: #28a745;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.view-btn:hover {
+  background-color: #218838;
+}
+
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.login-btn {
+  padding: 8px 16px;
+  background-color: #ff1e00;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.login-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Fix Signup Page Design Issues */
+.signup-container {
+  /* background-color: transparent !important;  */
+  background-color: #007bff;
+}
+
+.signup-form {
+  max-width: 100%; /* Ensures full responsiveness */
+  background: none !important; /* Prevents global white bg */
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.signup-form input,
+.signup-form button {
+  border: none !important;
+  background: transparent !important;
+}
+
+/* Fix Signup Page Design Issues */
+.login-container {
+  /* background-color: transparent !important;  */
+  background-color: #007bff;
+}
+
+.login-form {
+  max-width: 100%; /* Ensures full responsiveness */
+  background: none !important; /* Prevents global white bg */
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.login-form input,
+.login-form button {
+  border: none !important;
+  background: transparent !important;
+}
+
+/* Fix Signup Page Design Issues */
+.login-container {
+  /* background-color: transparent !important;  */
+  background-color: #007bff;
+}
+
+.login-form {
+  max-width: 100%; /* Ensures full responsiveness */
+  background: none !important; /* Prevents global white bg */
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.login-form input,
+.login-form button {
+  border: none !important;
+  background: transparent !important;
+}
