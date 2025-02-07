@@ -86,7 +86,7 @@ const Login = () => {
               href="/signup"
               className="text-white font-semibold hover:underline"
             >
-              Login
+              Signup
             </a>
           </p>
           <a
