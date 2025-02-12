@@ -59,7 +59,7 @@ const EventDashboard = () => {
       setIsAuthenticated(true);
 
       try {
-        const response = await axios.get("http://localhost:8080/api/get-event", {
+        const response = await axios.get(process.env.REACT_APP_API_URL+"/get-event", {
           headers: { Authorization: `Bearer ${token}` },
         });
 

@@ -19,7 +19,7 @@ const EventForm = () => {
     const token = localStorage.getItem("token");
 
     try {
-      await axios.post("http://localhost:8080/api/events", eventData, {
+      await axios.post(process.env.REACT_APP_API_URL+"/events", eventData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -8,7 +8,7 @@ import Signup from "./components/Signup";
 import { io } from "socket.io-client";
 import "./styles.css";
 
-const socket = io("http://localhost:8080"); // backend server URL
+const socket = io(process.env.PORT); // backend server URL
 
 function App() {
   useEffect(() => {
