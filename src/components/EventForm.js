@@ -15,11 +15,11 @@ const EventForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const eventData = { eventName, description, date, time, category };
+    const eventData = { eventName, description, date, time, category }; // Don't send attendees here
     const token = localStorage.getItem("token");
 
     try {
-      await axios.post(process.env.REACT_APP_API_URL+"/events", eventData, {
+      await axios.post(process.env.REACT_APP_API_URL + "/events", eventData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -31,7 +31,7 @@ const EventForm = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-[#1D1D2C] to-[#111827]">
       <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-4 text-center">Create Event</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -63,6 +63,7 @@ const EventForm = () => {
               </option>
             ))}
           </select>
+          
           <input
             type="date"
             value={date}
