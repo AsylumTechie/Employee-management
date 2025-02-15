@@ -19,7 +19,8 @@ const Login = () => {
         { headers: { "Content-Type": "application/json" } }
       );
 
-      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("token", response.data.token,);
+      
       navigate("/dashboard");
     } catch (error) {
       setError(error.response?.data?.message || "Invalid credentials");

@@ -7,7 +7,7 @@ const EventForm = () => {
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-  const [category, setCategory] = useState(""); // Default category value
+  const [category, setCategory] = useState(""); 
   const navigate = useNavigate();
 
   const categories = ["Technology", "Business", "Entertainment", "Health", "Education"];
@@ -15,7 +15,7 @@ const EventForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const eventData = { eventName, description, date, time, category }; // Don't send attendees here
+    const eventData = { eventName, description, date, time, category }; 
     const token = localStorage.getItem("token");
 
     try {
