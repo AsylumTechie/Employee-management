@@ -52,7 +52,6 @@ const EventDashboard = () => {
     fetchEvents();
 
     const handleEventJoined = ({ eventId, attendees }) => {
-      console.log(attendees);
 
       setEvents((prevEvents) =>
         prevEvents.map((event) =>

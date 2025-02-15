@@ -16,7 +16,7 @@ const socket = io(process.env.REACT_APP_SOCKET_URL, {
 function App() {
   useEffect(() => {
     socket.on("connect", () => {
-      console.log("Connected to WebSocket server");
+      ("Connected to WebSocket server");
     });
   }, []);
 
