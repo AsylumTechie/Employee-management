@@ -1,17 +1,6 @@
 {
   "employees": [
     {
-      "id": "93c7",
-      "firstName": "Rohit",
-      "lastName": "Kumar",
-      "age": "23",
-      "gender": "Male",
-      "role": "Sales",
-      "experience": "20",
-      "salary": "300000",
-      "address": "Delhi"
-    },
-    {
       "id": "942a",
       "firstName": "Akash",
       "lastName": "Chaudhary",
@@ -21,6 +10,28 @@
       "experience": "44",
       "salary": "234565432",
       "address": "Uttrakhand"
+    },
+    {
+      "id": "ed3f",
+      "firstName": "Rohit",
+      "lastName": "Kumar",
+      "age": "24",
+      "gender": "Male",
+      "role": "Sales",
+      "experience": "24",
+      "salary": "90000900",
+      "address": "Delhi"
+    },
+    {
+      "id": "ccdf",
+      "firstName": "Aman Ok",
+      "lastName": "Chaudhary",
+      "age": "22",
+      "gender": "Male",
+      "role": "Dev",
+      "experience": "19",
+      "salary": "45000",
+      "address": "Delhi"
     }
   ],
   "users": [
@@ -32,6 +43,12 @@
     },
     {
       "id": "079f",
+      "userName": "Test",
+      "email": "test@gmail.com",
+      "password": "test"
+    },
+    {
+      "id": "3579",
       "userName": "Test",
       "email": "test@gmail.com",
       "password": "test"

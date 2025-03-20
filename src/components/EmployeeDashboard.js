@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
-import axiosInstance from "../utils/axiosInstance";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import {
   Drawer,
   List,
@@ -15,69 +14,66 @@ import {
   TextField,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchEmployees,
+  updateEmployee,
+  deleteEmployee,
+} from "../redux/employeeSlice";
 import "../styles.css";
 
-const EmployeeDashboard = () => {
-  const [employees, setEmployees] = useState([]);
+const EmployeeDashboard = ({ theme }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const employees = useSelector((state) => state.employees.list);
+
   const [selectedMenu, setSelectedMenu] = useState("Overview");
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [currentEmployee, setCurrentEmployee] = useState(null);
-  const [filteredEmployees, setFilteredEmployees] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-
-  const navigate = useNavigate();
-  
+  const [filteredEmployees, setFilteredEmployees] = useState([]);
 
   useEffect(() => {
-    const fetchEmployees = async () => {
-      try {
-        const response = await axiosInstance.get(
-          "http://localhost:5002/employees"
-        );
-        setEmployees(response.data);
-        setFilteredEmployees(response.data); // Initialize filtered list
-      } catch (error) {
-        console.error("Error fetching employees:", error);
-      }
-    };
-    fetchEmployees();
-  }, []);
+    dispatch(fetchEmployees());
+  }, [dispatch]);
 
-  const handleSearchChange = (e) => {
-    const query = e.target.value.toLowerCase();
-    setSearchQuery(query);
+  useEffect(() => {
+    setFilteredEmployees(employees);
+  }, [employees]);
 
-    const filtered = employees.filter(
-      (emp) =>
-        emp.firstName.toLowerCase().includes(query) ||
-        emp.lastName.toLowerCase().includes(query) ||
-        emp.role.toLowerCase().includes(query)
-    );
+  const handleSearchChange = useCallback(
+    (e) => {
+      const query = e.target.value.toLowerCase();
+      setSearchQuery(query);
 
-    setFilteredEmployees(filtered);
-  };
+      const filtered = employees.filter(
+        (emp) =>
+          emp.firstName.toLowerCase().includes(query) ||
+          emp.lastName.toLowerCase().includes(query) ||
+          emp.role.toLowerCase().includes(query)
+      );
+      setFilteredEmployees(filtered);
+    },
+    [employees]
+  );
 
   const handleEdit = (employee) => {
-    setCurrentEmployee(employee);
+    setCurrentEmployee({ ...employee });
     setEditDialogOpen(true);
   };
 
-  const handleEditSubmit = async () => {
-    try {
-      await axiosInstance.put(
-        `/employees/${currentEmployee.id}`,
-        currentEmployee
-      );
-      setEmployees((prev) =>
-        prev.map((emp) =>
-          emp.id === currentEmployee.id ? currentEmployee : emp
-        )
-      );
-      setEditDialogOpen(false);
-    } catch (error) {
-      console.error("Error updating employee:", error);
-    }
+  const handleEditSubmit = () => {
+    if (!currentEmployee) return;
+
+    dispatch(updateEmployee(currentEmployee))
+      .unwrap()
+      .then(() => {
+        setEditDialogOpen(false);
+      })
+      .catch((error) => {
+        console.error("Error updating employee:", error);
+      });
   };
 
   const handleDelete = (employee) => {
@@ -85,16 +81,17 @@ const EmployeeDashboard = () => {
     setDeleteDialogOpen(true);
   };
 
-  const confirmDelete = async () => {
-    try {
-      await axiosInstance.delete(`/employees/${currentEmployee.id}`);
-      setEmployees((prev) =>
-        prev.filter((emp) => emp.id !== currentEmployee.id)
-      );
-      setDeleteDialogOpen(false);
-    } catch (error) {
-      console.error("Error deleting employee:", error);
-    }
+  const confirmDelete = () => {
+    if (!currentEmployee) return;
+
+    dispatch(deleteEmployee(currentEmployee.id))
+      .unwrap()
+      .then(() => {
+        setDeleteDialogOpen(false);
+      })
+      .catch((error) => {
+        console.error("Error deleting employee:", error);
+      });
   };
 
   const renderContent = useMemo(() => {
@@ -122,7 +119,6 @@ const EmployeeDashboard = () => {
             <Button
               variant="contained"
               color="primary"
-              size="medium"
               onClick={() => navigate("/add-employee")}
             >
               Add Employee
@@ -138,7 +134,7 @@ const EmployeeDashboard = () => {
                 <th className="p-3">Age</th>
                 <th className="p-3">Gender</th>
                 <th className="p-3">Salary</th>
-                <th className="p-3">Experince</th>
+                <th className="p-3">Experience</th>
                 <th className="p-3">Actions</th>
               </tr>
             </thead>
@@ -152,7 +148,6 @@ const EmployeeDashboard = () => {
                   <td className="p-3">{emp.firstName}</td>
                   <td className="p-3">{emp.lastName}</td>
                   <td className="p-3">{emp.role}</td>
-
                   <td className="p-3">{emp.age}</td>
                   <td className="p-3">{emp.gender}</td>
                   <td className="p-3">{emp.salary}</td>
@@ -161,15 +156,13 @@ const EmployeeDashboard = () => {
                     <Button
                       variant="contained"
                       color="primary"
-                      size="medium"
                       onClick={() => handleEdit(emp)}
                     >
                       Edit
                     </Button>
                     <Button
                       variant="contained"
-                      color="secondary"
-                      size="small"
+                      sx={{ bgcolor: "red" }}
                       onClick={() => handleDelete(emp)}
                     >
                       Delete
@@ -182,14 +175,20 @@ const EmployeeDashboard = () => {
         </>
       );
     }
-  }, [selectedMenu, filteredEmployees]);
+  }, [
+    selectedMenu,
+    searchQuery,
+    handleSearchChange,
+    filteredEmployees,
+    navigate,
+  ]);
 
   return (
     <Box
       sx={{
         display: "flex",
         minHeight: "100vh",
-        bgcolor: "#FFF5E1",
+        bgcolor: theme === "light" ? "#FFF5E1" : "gray.900",
         color: "black",
       }}
     >
@@ -197,15 +196,16 @@ const EmployeeDashboard = () => {
         variant="permanent"
         sx={{
           width: 240,
-          flexShrink: 0,
           "& .MuiDrawer-paper": {
             width: 240,
-            bgcolor: "#1E1E1E",
+            bgcolor: "#1F2937",
             color: "white",
           },
         }}
       >
-        <Box sx={{ p: 2, textAlign: "center", borderBottom: "1px solid gray" }}>
+        <Box
+          sx={{ p: 2.5, textAlign: "center", borderBottom: "1px solid gray" }}
+        >
           <Typography variant="h6" fontWeight="bold">
             Velocity Consultancy
           </Typography>
@@ -231,94 +231,108 @@ const EmployeeDashboard = () => {
         {renderContent}
       </Box>
 
-      {/* Edit Dialog */}
       <Dialog
         open={editDialogOpen}
         onClose={() => setEditDialogOpen(false)}
-        maxWidth="md" // Increase max width
-        fullWidth // Ensures it takes the full width allowed
+        fullWidth
+        maxWidth="sm"
         PaperProps={{
           sx: {
-            bgcolor: "#1E1E1",
-            color: "white",
-            p: 3, // Add padding for better spacing
-            width: "600px", // Custom width if needed
+            backgroundColor: theme === "light" ? "#FFF5E1" : "white",
+            color: theme === "light" ? "black" : "white",
+            borderRadius: "8px",
+            padding: "24px",
           },
         }}
       >
-        <DialogTitle>Edit Employee</DialogTitle>
-        <DialogContent
-          sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-        >
-          <TextField
-            fullWidth
-            label="First Name"
-            variant="outlined"
-            value={currentEmployee?.firstName || ""}
-            onChange={(e) =>
-              setCurrentEmployee({
-                ...currentEmployee,
-                firstName: e.target.value,
-              })
-            }
-            sx={{ input: { color: "white" }, label: { color: "gray.400" } }}
-          />
-          <TextField
-            fullWidth
-            label="Last Name"
-            variant="outlined"
-            value={currentEmployee?.lastName || ""}
-            onChange={(e) =>
-              setCurrentEmployee({
-                ...currentEmployee,
-                lastName: e.target.value,
-              })
-            }
-            sx={{ input: { color: "white" }, label: { color: "gray.400" } }}
-          />
-          <TextField
-            fullWidth
-            label="Role"
-            variant="outlined"
-            value={currentEmployee?.role || ""}
-            onChange={(e) =>
-              setCurrentEmployee({ ...currentEmployee, role: e.target.value })
-            }
-            sx={{ input: { color: "white" }, label: { color: "gray.400" } }}
-          />
+        <DialogTitle sx={{ fontWeight: "bold", fontSize: "22px" }}>
+          Edit Employee
+        </DialogTitle>
+        <DialogContent>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 1 }}>
+            <TextField
+              fullWidth
+              label="First Name"
+              value={currentEmployee?.firstName || ""}
+              onChange={(e) =>
+                setCurrentEmployee({
+                  ...currentEmployee,
+                  firstName: e.target.value,
+                })
+              }
+              sx={{ mb: 2 }}
+            />
+            <TextField
+              fullWidth
+              label="Last Name"
+              value={currentEmployee?.lastName || ""}
+              onChange={(e) =>
+                setCurrentEmployee({
+                  ...currentEmployee,
+                  lastName: e.target.value,
+                })
+              }
+              sx={{ mb: 2 }}
+            />
+            <TextField
+              fullWidth
+              label="Role"
+              value={currentEmployee?.role || ""}
+              onChange={(e) =>
+                setCurrentEmployee({ ...currentEmployee, role: e.target.value })
+              }
+              sx={{ mb: 2 }}
+            />
+          </Box>
         </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={() => setEditDialogOpen(false)}
-            sx={{ color: "primary" }}
-          >
+        <DialogActions sx={{ justifyContent: "flex-end", padding: "16px" }}>
+          <Button onClick={() => setEditDialogOpen(false)} variant="outlined">
             Cancel
           </Button>
-          <Button onClick={handleEditSubmit} color="primary">
+          <Button
+            onClick={handleEditSubmit}
+            color="primary"
+            variant="contained"
+          >
             Save
           </Button>
         </DialogActions>
       </Dialog>
 
-      {/* Delete Confirmation Dialog */}
       <Dialog
         open={deleteDialogOpen}
         onClose={() => setDeleteDialogOpen(false)}
-        PaperProps={{ sx: { bgcolor: "#1E1E1E", color: "white" } }}
+        fullWidth
+        maxWidth="xs"
+        slotProps={{
+          backdrop: {
+            sx: { backgroundColor: "rgba(0, 0, 0, 0.5)" }, 
+          },
+          paper: {
+            sx: {
+              backgroundColor: theme === "light" ? "#FFF5E1" : "#1F2937",
+              color: theme === "light" ? "black" : "white",
+              borderRadius: "8px",
+              padding: "20px",
+              textAlign: "center", 
+            },
+          },
+        }}
       >
-        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogTitle sx={{ fontSize: "20px", fontWeight: "bold" }}>
+          Confirm Deletion
+        </DialogTitle>
         <DialogContent>
-          Are you sure you want to delete {currentEmployee?.firstName}{" "}
-          {currentEmployee?.lastName}?
+          <Typography variant="body1">
+            Are you sure you want to delete{" "}
+            <strong>{currentEmployee?.firstName}</strong>?
+          </Typography>
         </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={() => setDeleteDialogOpen(false)}
-            sx={{ color: "white" }}
-          >
+        <DialogActions sx={{ justifyContent: "center", paddingBottom: "16px" }}>
+          <Button onClick={() => setDeleteDialogOpen(false)} variant="outlined">
             Cancel
           </Button>
-          <Button onClick={confirmDelete} color="secondary">
+          <Button onClick={confirmDelete} color="error" variant="contained">
             Delete
           </Button>
         </DialogActions>

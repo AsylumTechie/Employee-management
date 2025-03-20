@@ -1,10 +1,9 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "http://localhost:5002",
 });
 
-// 🔹 Interceptor to automatically refresh token
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -31,7 +30,6 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-// 🔹 Attach token to requests
 axiosInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem("accessToken");
   if (token) config.headers.Authorization = `Bearer ${token}`;

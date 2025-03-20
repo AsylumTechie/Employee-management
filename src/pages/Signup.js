@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -14,7 +14,7 @@ const Signup = () => {
     setError("");
 
     try {
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         "http://localhost:5002/users",
         {
           userName,

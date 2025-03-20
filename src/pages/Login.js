@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
 
 const Login = ({ setIsAuthenticated }) => {
   const [email, setEmail] = useState("");
@@ -11,18 +11,25 @@ const Login = ({ setIsAuthenticated }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
-
+  
     try {
-      const response = await axios.get("http://localhost:5002/users");
-
-      // Find user
+      const response = await axiosInstance.get("http://localhost:5002/users");
+      
       const user = response.data.find(
         (u) => u.email === email && u.password === password
       );
-
+  
       if (user) {
-        localStorage.setItem("token", "your-sample-token"); // Store a sample token
-        setIsAuthenticated(true); // Update authentication state
+        const fakeToken = `fake-token-${user.id}-${new Date().getTime()}`;
+        
+        localStorage.setItem("token", fakeToken);
+        localStorage.setItem("user", JSON.stringify(user)); 
+        localStorage.setItem("userId", user.id);  
+
+
+        console.log("user details", user)
+        
+        setIsAuthenticated(true);
         navigate("/dashboard");
       } else {
         setError("Invalid credentials");
@@ -31,6 +38,7 @@ const Login = ({ setIsAuthenticated }) => {
       setError("Something went wrong. Please try again later.");
     }
   };
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-[#1D1D2C] to-[#111827]">

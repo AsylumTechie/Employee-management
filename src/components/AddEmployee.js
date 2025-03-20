@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useDispatch } from "react-redux";
+import { addEmployee } from "../redux/employeeSlice";
 
-const AddEmployee = () => {
+const AddEmployee = ({ theme }) => {
+  const dispatch = useDispatch();
   const [employee, setEmployee] = useState({
     firstName: "",
     lastName: "",
@@ -16,7 +18,6 @@ const AddEmployee = () => {
 
   const navigate = useNavigate();
 
-  // Handle input changes dynamically
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEmployee((prev) => ({
@@ -26,19 +27,29 @@ const AddEmployee = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-
+    e.preventDefault(); 
+  
     try {
-      await axios.post("http://localhost:5002/employees", employee);
-      navigate("/dashboard");
+      await dispatch(addEmployee(employee)).unwrap(); 
+      navigate("/dashboard"); 
     } catch (error) {
       console.error("Error adding employee:", error);
     }
   };
+  
 
   return (
-    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: "#FFF5E1" }}>
-      <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
+    <div
+      className="min-h-screen flex items-center justify-center"
+      style={{
+        backgroundColor: theme === "light" ? "#FFF5E1" : "#1F2937",
+        color: theme === "light" ? "black" : "white",
+      }}
+    >
+      <div
+        className="p-6 rounded-lg shadow-md w-full max-w-md"
+        style={{ backgroundColor: theme === "light" ? "white" : "#374151" }} 
+      >
         <h2 className="text-2xl font-bold mb-4 text-center">Add Employee</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
