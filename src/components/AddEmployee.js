@@ -43,7 +43,7 @@ const AddEmployee = ({ theme }) => {
       className="min-h-screen flex items-center justify-center"
       style={{
         backgroundColor: theme === "light" ? "#FFF5E1" : "#1F2937",
-        color: theme === "light" ? "black" : "white",
+        color: theme === "light" ? "black" : "black",
       }}
     >
       <div

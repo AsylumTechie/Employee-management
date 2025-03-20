@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://manage-employee-nml5.onrender.com",
+  baseURL: "http://localhost:5002",
 });
 
 axiosInstance.interceptors.response.use(
@@ -12,14 +12,13 @@ axiosInstance.interceptors.response.use(
 
       if (refreshToken) {
         try {
-          const res = await axios.post("https://manage-employee-nml5.onrender.com", { refreshToken });
+          const res = await axios.post("http://localhost:5002", { refreshToken });
           localStorage.setItem("accessToken", res.data.accessToken);
           localStorage.setItem("refreshToken", res.data.refreshToken);
 
           error.config.headers["Authorization"] = `Bearer ${res.data.accessToken}`;
           return axiosInstance.request(error.config);
         } catch (err) {
-          console.log("Refresh token expired, logging out");
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken");
           window.location.href = "/login";

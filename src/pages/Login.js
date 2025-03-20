@@ -13,7 +13,7 @@ const Login = ({ setIsAuthenticated }) => {
     setError("");
   
     try {
-      const response = await axiosInstance.get("https://manage-employee-nml5.onrender.com/users");
+      const response = await axiosInstance.get("http://localhost:5002/users");
       
       const user = response.data.find(
         (u) => u.email === email && u.password === password
@@ -25,9 +25,6 @@ const Login = ({ setIsAuthenticated }) => {
         localStorage.setItem("token", fakeToken);
         localStorage.setItem("user", JSON.stringify(user)); 
         localStorage.setItem("userId", user.id);  
-
-
-        console.log("user details", user)
         
         setIsAuthenticated(true);
         navigate("/dashboard");

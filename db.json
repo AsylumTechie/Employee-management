@@ -1,19 +1,8 @@
 {
   "employees": [
     {
-      "id": "942a",
-      "firstName": "Akash",
-      "lastName": "Chaudhary",
-      "age": "34",
-      "gender": "Male",
-      "role": "Sales",
-      "experience": "44",
-      "salary": "234565432",
-      "address": "Uttrakhand"
-    },
-    {
       "id": "ed3f",
-      "firstName": "Rohit",
+      "firstName": "Rohit Edited",
       "lastName": "Kumar",
       "age": "24",
       "gender": "Male",
@@ -24,7 +13,7 @@
     },
     {
       "id": "ccdf",
-      "firstName": "Aman Ok",
+      "firstName": "Aman ",
       "lastName": "Chaudhary",
       "age": "22",
       "gender": "Male",
@@ -32,6 +21,54 @@
       "experience": "19",
       "salary": "45000",
       "address": "Delhi"
+    },
+    {
+      "id": "7699",
+      "firstName": "Tanvi",
+      "lastName": "Chaudhary",
+      "age": "22",
+      "gender": "Female",
+      "role": "Dev",
+      "experience": "2",
+      "salary": "80000",
+      "address": "Delhi",
+      "userId": "079f"
+    },
+    {
+      "id": "f9f3",
+      "firstName": "Test",
+      "lastName": " testing",
+      "age": "23",
+      "gender": "Male",
+      "role": "Dev",
+      "experience": "2",
+      "salary": "90000",
+      "address": "Delhi",
+      "userId": "bb40"
+    },
+    {
+      "id": "c9d2",
+      "firstName": "Live",
+      "lastName": "test",
+      "age": "22",
+      "gender": "Male",
+      "role": "Dev",
+      "experience": "2",
+      "salary": "78000",
+      "address": "Gurgaon",
+      "userId": "14b7"
+    },
+    {
+      "id": "5c3f",
+      "firstName": "Added",
+      "lastName": "New",
+      "age": "22",
+      "gender": "Male",
+      "role": "Dev",
+      "experience": "2",
+      "salary": "340000",
+      "address": "Gurgaon",
+      "userId": "079f"
     }
   ],
   "users": [
@@ -52,6 +89,12 @@
       "userName": "Test",
       "email": "test@gmail.com",
       "password": "test"
+    },
+    {
+      "id": "14b7",
+      "userName": "Velocity",
+      "email": "velocity@gmail.com",
+      "password": "velocity"
     }
   ]
 }

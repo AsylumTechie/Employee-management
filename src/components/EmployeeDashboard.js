@@ -310,7 +310,7 @@ const EmployeeDashboard = ({ theme }) => {
           },
           paper: {
             sx: {
-              backgroundColor: theme === "light" ? "#FFF5E1" : "#1F2937",
+              backgroundColor: theme === "light" ? "#FFF5E1" : "white",
               color: theme === "light" ? "black" : "white",
               borderRadius: "8px",
               padding: "20px",
