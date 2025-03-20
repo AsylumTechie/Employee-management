@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:5002",
+  baseURL: "https://manage-employee-nml5.onrender.com",
 });
 
 axiosInstance.interceptors.response.use(
@@ -12,7 +12,7 @@ axiosInstance.interceptors.response.use(
 
       if (refreshToken) {
         try {
-          const res = await axios.post("http://localhost:5002", { refreshToken });
+          const res = await axios.post("https://manage-employee-nml5.onrender.com", { refreshToken });
           localStorage.setItem("accessToken", res.data.accessToken);
           localStorage.setItem("refreshToken", res.data.refreshToken);
 

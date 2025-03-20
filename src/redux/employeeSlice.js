@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import axiosInstance from "../utils/axiosInstance";
 
-const API_URL = "http://localhost:5002/employees";
+const API_URL = "https://manage-employee-nml5.onrender.com/employees";
 
 export const fetchEmployees = createAsyncThunk("employees/fetchEmployees", async (_, { rejectWithValue }) => {
   try {

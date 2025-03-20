@@ -13,7 +13,7 @@ const Login = ({ setIsAuthenticated }) => {
     setError("");
   
     try {
-      const response = await axiosInstance.get("http://localhost:5002/users");
+      const response = await axiosInstance.get("https://manage-employee-nml5.onrender.com/users");
       
       const user = response.data.find(
         (u) => u.email === email && u.password === password
