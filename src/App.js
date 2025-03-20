@@ -1,35 +1,32 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import EventDashboard from "./components/EventDashboard";
-import EventForm from "./components/EventForm";
-import Login from "./components/Login";
-import Signup from "./components/Signup";
-import { io } from "socket.io-client";
-import "./styles.css";
-
-const socket = io(process.env.REACT_APP_SOCKET_URL, {
-  transports: ["websocket"],
-  withCredentials: true,
-  path: "/socket.io",
-});
+import EmployeeDashboard from "./components/EmployeeDashboard";
+import AddEmployee from "./components/AddEmployee";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import PrivateRoute from "./components/PrivateRoute";
+import Navbar from "./components/Navbar";
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   useEffect(() => {
-    socket.on("connect", () => {
-      ("Connected to WebSocket server");
-    });
+    const token = localStorage.getItem("token");
+    setIsAuthenticated(!!token);
   }, []);
 
   return (
     <div>
       <Router>
+        <Navbar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
         <Routes>
-          <Route path="/home" element={<EventDashboard />} />
-          <Route path="/" element={<EventDashboard />} />
-          <Route path="/dashboard" element={<EventDashboard />} />
-          <Route path="/event/create" element={<EventForm />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/add-employee" element={<AddEmployee />} />
+
+          <Route path="/" element={<PrivateRoute />}>
+            <Route path="/dashboard" element={<EmployeeDashboard />} />
+          </Route>
         </Routes>
       </Router>
     </div>

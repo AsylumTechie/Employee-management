@@ -2,32 +2,33 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const Signup = () => {
+const Login = ({ setIsAuthenticated }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userName, setUserName] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSignup = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
 
-    if (!userName || !email || !password) {
-      return setError("All fields are required.");
-    }
-
     try {
-      const response = await axios.post(process.env.REACT_APP_API_URL + "/register", {
-        userName,
-        email,
-        password,
-      });
+      const response = await axios.get("http://localhost:5002/users");
 
-      localStorage.setItem("token", response.data.token);
-      navigate("/login");
+      // Find user
+      const user = response.data.find(
+        (u) => u.email === email && u.password === password
+      );
+
+      if (user) {
+        localStorage.setItem("token", "your-sample-token"); // Store a sample token
+        setIsAuthenticated(true); // Update authentication state
+        navigate("/dashboard");
+      } else {
+        setError("Invalid credentials");
+      }
     } catch (error) {
-      setError(error.response?.data?.message || "Something went wrong");
+      setError("Something went wrong. Please try again later.");
     }
   };
 
@@ -35,10 +36,10 @@ const Signup = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-[#1D1D2C] to-[#111827]">
       <div className="w-full max-w-md p-8 bg-white/10 backdrop-blur-lg shadow-xl rounded-xl border border-white/20">
         <h2 className="text-3xl font-semibold text-center text-white">
-          Create an Account
+          Welcome Back
         </h2>
         <p className="text-center text-gray-300 mt-2">
-          Join us and start managing your events effortlessly.
+          Log in to continue managing your employees.
         </p>
 
         {error && (
@@ -47,24 +48,12 @@ const Signup = () => {
           </p>
         )}
 
-        <form onSubmit={handleSignup} className="mt-6 space-y-4">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="User Name"
-              className="w-full p-4 pl-12 border border-gray-600 rounded-lg bg-white/20 text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={userName}
-              onChange={(e) => setUserName(e.target.value)}
-              required
-            />
-            <span className="absolute left-4 top-4 text-gray-400">👤</span>
-          </div>
-
+        <form onSubmit={handleLogin} className="mt-6 space-y-4">
           <div className="relative">
             <input
               type="email"
               placeholder="Email"
-              className="w-full p-4 pl-12 border border-gray-600 rounded-lg bg-white/20 text-black  placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-4 pl-12 border border-gray-600 rounded-lg bg-white/20 text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -76,7 +65,7 @@ const Signup = () => {
             <input
               type="password"
               placeholder="Password"
-              className="w-full p-4 pl-12 border border-gray-600 rounded-lg bg-white/20 text-black  placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-4 pl-12 border border-gray-600 rounded-lg bg-white/20 text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -88,22 +77,17 @@ const Signup = () => {
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition duration-300 shadow-md"
           >
-            Sign Up
+            Login
           </button>
         </form>
 
         <div className="mt-6 flex justify-between items-center">
-          <p className="text-gray-300">
-            Already have an account?{" "}
-            <a href="/login" className="text-blue-400 hover:underline">
-              Login
-            </a>
-          </p>
+          <p className="text-gray-300">Don't have an account?</p>
           <a
-            href="/dashboard"
+            href="/signup"
             className="text-white bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-600"
           >
-            Guest Login
+            Signup
           </a>
         </div>
       </div>
@@ -111,4 +95,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Login;
